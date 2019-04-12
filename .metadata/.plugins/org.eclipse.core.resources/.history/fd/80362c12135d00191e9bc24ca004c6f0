@@ -1,0 +1,47 @@
+options
+{
+ static = false;
+}
+PARSER_BEGIN(EC)
+package ECC;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+public class EC
+{
+ public static void main(String args []) throws ParseException
+ {
+ try
+ {
+ System.out.println("Lendo arquivo fonte...");
+ FileInputStream fis = new FileInputStream(new File("..//JavaCC//src//fonte.txt"));
+ EC parser = new EC(fis);
+ parser.Start();
+ System.out.println("Arquivo fonte processado corretamente!");
+ }
+ catch (IOException e)
+ {
+ System.out.println("Falha ao abrir arquivo fonte.");
+ System.exit(0);
+ }
+ }
+}
+PARSER_END(EC)
+SKIP : { " "| "\t" | "\n" | "\r" }
+
+TOKEN :
+{
+	< L : ["a"-"z"] >	
+}
+
+TOKEN :
+{
+	< D : ["0"-"9"] >
+}
+
+TOKEN :
+{
+	< CM : "//" + ( L | D )* >
+}
+
+void Start() : {} { (CM) + < EOF > }

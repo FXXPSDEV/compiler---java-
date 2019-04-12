@@ -1,0 +1,27 @@
+options
+{
+ static = false;
+}
+PARSER_BEGIN(Adede)
+
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+
+public class Adede{
+	public static void main(String args []) throws ParseException{
+	 	try{
+			 System.out.println("Lendo arquivo fonte...");
+			 FileInputStream fis = new FileInputStream(new File("..//JavaCC//src//fonte.txt"));
+			 Adede parser = new Adede(fis);
+			 parser.Start();
+			 System.out.println("Arquivo fonte processado corretamente!");
+		}catch (IOException e){
+			 System.out.println("Falha ao abrir arquivo fonte.");
+			 System.exit(0);
+		}
+	 }	
+}
+PARSER_END(Adede)
+SKIP : { " "| "\t" | "\n" | "\r" }
+void Start() : {} { ("a"|"b") }

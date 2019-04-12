@@ -1,0 +1,35 @@
+options{
+  JDK_VERSION = "1.5";
+  static = false;
+}
+PARSER_BEGIN(Adede)
+package soma;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+
+public class Adede{
+	public static void main(String args []) throws ParseException{
+	 	try{
+			 System.out.println("Lendo arquivo fonte...");
+			 FileInputStream fis = new FileInputStream(new File("..//JavaCC//src//fonte.txt"));
+			 Adede parser = new Adede(fis);
+			 parser.Start();
+			 System.out.println("Arquivo fonte processado corretamente!");
+		}catch (IOException e){
+			 System.out.println("Falha ao abrir arquivo fonte.");
+			 System.exit(0);
+		}
+	 }	
+}
+PARSER_END(Adede)
+SKIP : { " "| "\t" | "\n" | "\r" }
+
+TOKEN : { < #PLUS : "+" > }
+TOKEN : { < #MINUS : "-" > }
+TOKEN : { < #EQUAL : "=" > }
+TOKEN : { < OP : < PLUS > | < MINUS > | < EQUAL> > }
+TOKEN : { < NUMBER : (["0"-"9"])+ | (["0"-"9"])+ "," (["0"-"9"])+> }
+TOKEN : { < EOL : ";" > }
+
+void Start() : {} { (< NUMBER > (< OP > < NUMBER >)* < EOL >)+ <  EOF > }

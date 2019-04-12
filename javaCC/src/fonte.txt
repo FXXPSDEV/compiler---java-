@@ -1,0 +1,3 @@
+String flag;
+int number;
+double ab;

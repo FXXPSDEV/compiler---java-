@@ -1,0 +1,80 @@
+options
+{
+ static = false;
+}
+PARSER_BEGIN(EC)
+package ECC;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+public class EC
+{
+ public static void main(String args []) throws ParseException
+ {
+ try
+ {
+ System.out.println("Lendo arquivo fonte...");
+ FileInputStream fis = new FileInputStream(new File("..//JavaCC//src//fonte.txt"));
+ EC parser = new EC(fis);
+ parser.Start();
+ System.out.println("Arquivo fonte processado corretamente!");
+ }
+ catch (IOException e)
+ {
+ System.out.println("Falha ao abrir arquivo fonte.");
+ System.exit(0);
+ }
+ }
+}
+PARSER_END(EC)
+SKIP : { " "| "\t" | "\n" | "\r" }
+
+TOKEN :
+{
+  < EOL : ";" >
+}
+
+TOKEN :
+{
+  < #LETTER : ["A"-"Z", "a"-"z"] > |
+  < #DIGIT  : ["0"-"9"] >
+}
+
+TOKEN :
+{
+  < TIPO : (< INT > | < STRING > | < BYTE > | < SHORT > | < LONG > | < FLOAT > | < DOUBLE > | < CHAR > | < BOOLEAN >) > |
+  < #INT : "int" > |
+  < #STRING : "String" > |
+  < #BYTE : "byte" > |
+  < #SHORT : "short" > |
+  < #LONG : "long" > |
+  < #FLOAT : "float" > |
+  < #DOUBLE : "double" > |
+  < #CHAR : "char" > |
+  < #BOOLEAN : "boolean" >
+}
+
+TOKEN :
+{
+  < LITERALS : < LETTER >(< LETTER > | < DIGIT > | "_")* >
+}
+
+
+TOKEN :
+{
+	< SL : "//" (~["\n","\r"])* ("\n" | "\r" | "\r\n" | "") >
+}
+TOKEN :
+{
+	< ML : "/*" (~["*","/"])* "*/" >
+}
+
+void ID() : { }
+{
+  < TIPO >< LITERALS >< EOL >
+}
+
+void Start() : {}
+{
+	( ID() )+ < EOF >
+}
